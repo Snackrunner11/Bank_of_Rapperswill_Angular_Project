@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://bwz-rappi-m323.azurewebsites.net",
+    "secure": true,
+    "changeOrigin": true
+  }
+}

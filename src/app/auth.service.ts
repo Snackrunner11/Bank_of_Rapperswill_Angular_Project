@@ -1,12 +1,11 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-// Interface für Registrierungsdaten
 export interface RegisterData {
-  firstName: string;
+  firstName: string; 
   lastName: string;
-  username: string;
+  login: string;     
   password: string;
 }
 
@@ -16,47 +15,89 @@ export interface RegisterData {
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'http://localhost:3000/api'; // Beispiel-URL
+  private apiUrl = '/api/v1'; 
 
-  // --- LOGIN (Bereits vorhanden) ---
+  currentUser = signal('');
+
+  constructor() {
+    const firstName = localStorage.getItem('user_first_name');
+    const lastName = localStorage.getItem('user_last_name');
+    if (firstName && lastName) {
+      this.currentUser.set(`${firstName} ${lastName}`);
+    }
+  }
+
   login(username: string, password: string) {
-    this.http.post<{token: string, firstName: string, lastName: string}>(`${this.apiUrl}/login`, { username, password })
-      .subscribe({
-        next: (response) => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('user_first_name', response.firstName);
-          localStorage.setItem('user_last_name', response.lastName);
-          this.router.navigate(['/dashboard']); // Req 1.4
-        },
-        error: () => alert('Login fehlgeschlagen')
-      });
-  }
+    const payload = { login: username, password: password };
 
-  // --- NEU: REGISTRIERUNG (Req 1.5, 1.8) ---
-  register(data: RegisterData) {
-    this.http.post<{token: string}>(`${this.apiUrl}/register`, data)
+    this.http.post<any>(`${this.apiUrl}/auth/login`, payload)
       .subscribe({
         next: (response) => {
-          // Direkt einloggen nach Registrierung (Token speichern)
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('user_first_name', data.firstName);
-          localStorage.setItem('user_last_name', data.lastName);
+          // Req 1.2: Das Login soll auf dem vom Backend gelieferten JWT Token basieren.
+          const token = response.token || response.accessToken || response.jwt;
           
-          // Req 1.8: Weiterleitung zum Dashboard
-          this.router.navigate(['/dashboard']);
+          if (token) {
+            // Req 1.3: JWT Token (inkl. Name) im Local Storage hinterlegen.
+            localStorage.setItem('token', token);
+            
+            if (response.owner) {
+               localStorage.setItem('user_first_name', response.owner.firstname);
+               localStorage.setItem('user_last_name', response.owner.lastname);
+               this.currentUser.set(`${response.owner.firstname} ${response.owner.lastname}`);
+            }
+            
+            // Req 1.4: Nach Login direkt auf Dashboard weiterleiten.
+            this.router.navigate(['/dashboard']);
+          }
         },
-        error: (err) => alert('Registrierung fehlgeschlagen')
+        error: (err) => {
+          console.error('Login Fehler:', err);
+          alert('Login fehlgeschlagen! Bitte überprüfe deine Daten.');
+        }
       });
   }
 
-  // --- NEU: LOGOUT (Req 1.9, 1.10) ---
+  register(data: RegisterData) {
+    const payload = {
+      login: data.login,
+      firstname: data.firstName,
+      lastname: data.lastName,
+      password: data.password
+    };
+
+    this.http.post<any>(`${this.apiUrl}/auth/register`, payload)
+      .subscribe({
+        next: (response) => {
+          console.log('Register Response:', response);
+
+          const token = response.token || response.accessToken || response.jwt;
+
+          if (token) {
+            localStorage.setItem('token', token);
+            if (response.owner) {
+               localStorage.setItem('user_first_name', response.owner.firstname);
+               localStorage.setItem('user_last_name', response.owner.lastname);
+               this.currentUser.set(`${response.owner.firstname} ${response.owner.lastname}`);
+            }
+            // Req 1.8: Nach Registration direkt auf Dashboard weiterleiten.
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.login(data.login, data.password);
+          }
+        },
+        error: (err) => {
+          console.error('Register Error:', err);
+          alert('Registrierung fehlgeschlagen! Benutzername existiert eventuell schon.');
+        }
+      });
+  }
+
   logout() {
-    // Req 1.9: Token löschen
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_first_name');
-    localStorage.removeItem('user_last_name');
+    // Req 1.9: Logout löscht Token aus Local Storage.
+    localStorage.clear();
+    this.currentUser.set('');
     
-    // Req 1.10: Weiterleitung zum Login
+    // Req 1.10: Nach Logout auf Login Seite weiterleiten.
     this.router.navigate(['/login']);
   }
 }

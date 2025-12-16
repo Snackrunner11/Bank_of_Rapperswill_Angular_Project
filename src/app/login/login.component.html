@@ -1,25 +1,36 @@
-<section class="login-container">
-  <h2>Bank of Rapperswil Login</h2>
-  
-  <div class="form-group">
-    <label>Benutzername:</label>
-    <input type="text" 
-           [ngModel]="username()" 
-           (ngModelChange)="username.set($any($event))" 
-           placeholder="Benutzername">
-  </div>
+<div class="container-fluid">
+  <header class="login-header">
+    <h1>Welcome to the Finance Portal.</h1>
+    <a routerLink="/register" class="btn-primary register-btn">Register</a>
+  </header>
 
-  <div class="form-group">
-    <label>Passwort:</label>
-    <input type="password" 
-           [ngModel]="password()" 
-           (ngModelChange)="password.set($any($event))"
-           placeholder="Passwort">
-  </div>
+  <hr class="divider">
 
-  <button (click)="onLogin()">Login</button>
-  
-  <p class="hint">
-    Hinweis: Eingaben müssen länger als 3 Zeichen sein.
-  </p>
-</section>
+  <div class="login-form-container">
+    
+    <div class="form-group">
+      <label for="usernameInput">User name:</label>
+      <input type="text" 
+             id="usernameInput"
+             [ngModel]="username()" 
+             (ngModelChange)="username.set($event)" 
+             placeholder="user"
+             class="form-control">
+      <small class="form-text">Please specify your login, at least three characters.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="passwordInput">Password:</label>
+      <input type="password" 
+             id="passwordInput"
+             [ngModel]="password()" 
+             (ngModelChange)="password.set($event)"
+             placeholder="Password"
+             class="form-control">
+      <small class="form-text">Please specify your password, at least three characters.</small>
+    </div>
+
+    <button (click)="onLogin()" class="btn-primary login-btn">Login</button>
+
+  </div>
+</div>

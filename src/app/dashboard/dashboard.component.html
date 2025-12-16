@@ -1,32 +1,102 @@
-<div class="dashboard">
-  <header>
-    <h1>Bank Dashboard</h1>
-    <button (click)="onLogout()">Logout</button>
+<div class="container-fluid">
+  <header class="dashboard-header">
+    <h1>Praxisprojekt M323</h1>
+    <button (click)="onLogout()" class="btn-primary logout-btn">
+      Logout {{ authService.currentUser() }}
+    </button>
   </header>
 
-  <section class="payment-section">
-    <h3>Neue Zahlung (Req 2.0)</h3>
-    
-    <div class="form-group">
-      <label>Empfänger Konto-Nr:</label>
-      <input type="text" 
-             [ngModel]="toAccount()" 
-             (ngModelChange)="toAccount.set($event)" 
-             placeholder="CH...">
+  <hr class="divider">
+
+  <div class="dashboard-grid">
+
+    <section class="payment-section">
+      <h2>New Payment</h2>
       
-      <small *ngIf="recipientName()" class="recipient-hint">
-        Empfänger: {{ recipientName() }}
-      </small>
-    </div>
+      <div *ngIf="!paymentSuccess()" class="card payment-card">
+        
+        <div class="form-group">
+          <label for="fromInput">From:</label>
+          <input type="text" 
+                 id="fromInput"
+                 disabled 
+                 [value]="accountNr() + ' [' + (balance() | number:'1.2-2') + ' CHF]'"
+                 class="form-control disabled-input">
+        </div>
 
-    <div class="form-group">
-      <label>Betrag (CHF):</label>
-      <input type="number" 
-             [ngModel]="amount()" 
-             (ngModelChange)="amount.set($any($event))"
-             step="0.05">
-    </div>
+        <div class="form-group">
+          <label for="toInput">To:</label>
+          <input type="text" 
+                 id="toInput"
+                 [ngModel]="toAccount()" 
+                 (ngModelChange)="checkRecipient($event)" 
+                 placeholder="Target Account Number"
+                 class="form-control">
+          <small class="form-text" 
+                 [class.error-text]="recipientName() === 'Unknown account number specified'">
+            {{ recipientName() ? recipientName() : 'Please specify the target account number.' }}
+          </small>
+        </div>
 
-    <button (click)="onPay()">Zahlen</button>
-  </section>
+        <div class="form-group">
+          <label for="amountInput">Amount [CHF]:</label>
+          <input type="number" 
+                 id="amountInput"
+                 [ngModel]="amount()" 
+                 (ngModelChange)="amount.set($any($event))"
+                 placeholder="Amount in CHF"
+                 min="0.05"
+                 step="0.05"
+                 class="form-control"> 
+        </div>
+
+        <button (click)="onPay()" class="btn-primary pay-btn">Pay</button>
+      </div>
+
+      <div *ngIf="paymentSuccess()" class="card payment-card success-card">
+        <h3 class="success-title">Transaction successful!</h3>
+        <p>Transaction to <strong>{{ lastPaymentTarget() }}</strong> succeeded!</p>
+        <p>New balance: <strong>{{ lastPaymentBalance() | number:'1.2-2' }} CHF</strong></p>
+        <button (click)="onStartOver()" class="btn-primary start-over-btn">Start Over</button>
+      </div>
+
+    </section>
+
+    <section class="transactions-section">
+      <h2>Latest Transactions</h2>
+
+      <table class="transactions-table">
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>Target</th>
+            <th>Amount [CHF]</th>
+            <th>Balance [CHF]</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of visibleTransactions">
+            <td>{{ t.source }}</td>
+            <td>{{ t.target }}</td>
+            
+            <td [class.amount-positive]="t.amount > 0">
+              {{ t.amount | number:'1.2-2' }}
+            </td>
+            
+            <td>{{ t.balance | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="visibleTransactions.length === 0">
+            <td colspan="4" class="no-data">Keine Transaktionen vorhanden.</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="paging-controls" *ngIf="allTransactions.length > 10">
+         <button (click)="prevPage()" [disabled]="currentPage === 1">&lt;</button>
+         <span>Page {{ currentPage }}</span>
+         <button (click)="nextPage()" [disabled]="(currentPage * pageSize) >= allTransactions.length">&gt;</button>
+      </div>
+
+    </section>
+  </div>
 </div>

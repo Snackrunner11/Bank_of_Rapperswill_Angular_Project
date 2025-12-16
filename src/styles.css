@@ -1,1 +1,82 @@
-/* You can add global styles to this file, and also import other style files */
+/* Globale Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding-bottom: 40px; /* Platz für Footer */
+  color: #333;
+}
+
+/* Footer-Design */
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #4CAF50; /* BWZ Grün */
+  color: white;
+  padding: 5px 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+/* Standard Button Style (Blau), wird in Login/Dashboard wiederverwendet */
+button.btn-primary {
+  background-color: #007bff; /* Bootstrap Blau */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 100px;
+}
+
+button.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+button.btn-primary:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Formular Hinweise */
+.form-text {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+/* Inputs global stylen */
+input[type="text"], 
+input[type="password"], 
+input[type="number"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Container Layout */
+.container-fluid {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}

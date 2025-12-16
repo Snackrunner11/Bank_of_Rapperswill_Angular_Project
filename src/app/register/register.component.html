@@ -8,7 +8,7 @@
   <input type="password" [ngModel]="password()" (ngModelChange)="password.set($event)" placeholder="Passwort">
   <input type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" placeholder="Passwort bestätigen">
 
-  <button (click)="onRegister()">Registrieren</button>
+  <button (click)="onRegister()" [disabled]="!isValid()">Registrieren</button>
   
   <p><a routerLink="/login">Bereits einen Account? Zum Login</a></p>
 </div>

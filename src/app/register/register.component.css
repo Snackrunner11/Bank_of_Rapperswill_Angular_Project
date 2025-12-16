@@ -1,43 +1,41 @@
 /* Container für das Registrierungs-Formular */
 .register-container {
   max-width: 400px;
-  margin: 50px auto; /* Zentriert die Box horizontal mit Abstand von oben */
+  margin: 50px auto;
   padding: 2rem;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Leichter Schatten für Tiefe */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
 }
 
-/* Überschrift */
 .register-container h2 {
   text-align: center;
   color: #333;
   margin-bottom: 1.5rem;
 }
 
-/* Eingabefelder */
 .register-container input {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-sizing: border-box; /* Damit Padding die Breite nicht vergrößert */
+  box-sizing: border-box; 
   font-size: 1rem;
   transition: border-color 0.3s;
 }
 
 .register-container input:focus {
-  border-color: #1976d2; /* Angular/Bank Blau beim Fokus */
+  border-color: #1976d2; 
   outline: none;
 }
 
-/* Registrieren Button */
+/* Registrieren Button Normal */
 .register-container button {
   width: 100%;
   padding: 12px;
-  background-color: #1976d2; /* Primärfarbe */
+  background-color: #1976d2; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -48,10 +46,17 @@
 }
 
 .register-container button:hover {
-  background-color: #1565c0; /* Dunkleres Blau beim Hover */
+  background-color: #1565c0;
 }
 
-/* Link zurück zum Login */
+/* Style für deaktivierten Button (Req 1.6 & 1.7) */
+/* Visualisiert dem User, dass Anforderungen (Passwörter gleich, Länge > 3) nicht erfüllt sind */
+.register-container button:disabled {
+  background-color: #a0cfff; /* Helles, blasses Blau */
+  color: #e6e6e6;
+  cursor: not-allowed;
+}
+
 .register-container p {
   text-align: center;
   margin-top: 1rem;
@@ -67,7 +72,6 @@
   text-decoration: underline;
 }
 
-/* Responsive Anpassung für mobile Geräte */
 @media (max-width: 480px) {
   .register-container {
     margin: 20px;
