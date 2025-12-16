@@ -1,0 +1,32 @@
+<div class="dashboard">
+  <header>
+    <h1>Bank Dashboard</h1>
+    <button (click)="onLogout()">Logout</button>
+  </header>
+
+  <section class="payment-section">
+    <h3>Neue Zahlung (Req 2.0)</h3>
+    
+    <div class="form-group">
+      <label>Empfänger Konto-Nr:</label>
+      <input type="text" 
+             [ngModel]="toAccount()" 
+             (ngModelChange)="toAccount.set($event)" 
+             placeholder="CH...">
+      
+      <small *ngIf="recipientName()" class="recipient-hint">
+        Empfänger: {{ recipientName() }}
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Betrag (CHF):</label>
+      <input type="number" 
+             [ngModel]="amount()" 
+             (ngModelChange)="amount.set($any($event))"
+             step="0.05">
+    </div>
+
+    <button (click)="onPay()">Zahlen</button>
+  </section>
+</div>

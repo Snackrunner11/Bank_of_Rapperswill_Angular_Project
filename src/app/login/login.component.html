@@ -1,0 +1,25 @@
+<section class="login-container">
+  <h2>Bank of Rapperswil Login</h2>
+  
+  <div class="form-group">
+    <label>Benutzername:</label>
+    <input type="text" 
+           [ngModel]="username()" 
+           (ngModelChange)="username.set($any($event))" 
+           placeholder="Benutzername">
+  </div>
+
+  <div class="form-group">
+    <label>Passwort:</label>
+    <input type="password" 
+           [ngModel]="password()" 
+           (ngModelChange)="password.set($any($event))"
+           placeholder="Passwort">
+  </div>
+
+  <button (click)="onLogin()">Login</button>
+  
+  <p class="hint">
+    Hinweis: Eingaben müssen länger als 3 Zeichen sein.
+  </p>
+</section>

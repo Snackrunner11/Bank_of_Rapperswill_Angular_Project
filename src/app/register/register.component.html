@@ -1,0 +1,14 @@
+<div class="register-container">
+  <h2>Registrierung</h2>
+  
+  <input type="text" [ngModel]="firstName()" (ngModelChange)="firstName.set($event)" placeholder="Vorname">
+  <input type="text" [ngModel]="lastName()" (ngModelChange)="lastName.set($event)" placeholder="Nachname">
+  <input type="text" [ngModel]="username()" (ngModelChange)="username.set($event)" placeholder="Benutzername">
+  
+  <input type="password" [ngModel]="password()" (ngModelChange)="password.set($event)" placeholder="Passwort">
+  <input type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" placeholder="Passwort bestätigen">
+
+  <button (click)="onRegister()">Registrieren</button>
+  
+  <p><a routerLink="/login">Bereits einen Account? Zum Login</a></p>
+</div>
