@@ -160,13 +160,20 @@ export class ECockpitComponent implements OnInit {
       console.error(e);
     }
 
-    const relevantServer = serverTxs.filter(tx => 
-      tx.source === myBban || tx.target === myBban
+    const relevantLocal = localTransactions.filter(tx => 
+        (tx.source && tx.source === myBban) || 
+        (tx.target && tx.target === myBban)
     );
 
-    const uniqueLocal = localTransactions.filter(localTx => {
+    const relevantServer = serverTxs.filter(tx => 
+      (tx.source && tx.source === myBban) || 
+      (tx.target && tx.target === myBban)
+    );
+
+    const uniqueLocal = relevantLocal.filter(localTx => {
       return !relevantServer.some(serverTx => 
-        serverTx.date === localTx.date && Math.abs(serverTx.amount) === Math.abs(localTx.amount)
+        serverTx.date === localTx.date && 
+        Math.abs(serverTx.amount) === Math.abs(localTx.amount)
       );
     });
 

@@ -2,7 +2,7 @@ import { Component, inject, signal, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router'; // Wichtig fuer den Button
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { AccountService, Transaction, AccountInfo, Owner } from '../account.service';
 
@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
           this.localTransactions = JSON.parse(storedLocal);
         } catch (e) {
           console.error('Fehler beim Laden der lokalen Transaktionen', e);
+          this.localTransactions = [];
         }
       }
 
@@ -97,15 +98,23 @@ export class DashboardComponent implements OnInit {
         next: (serverList: Transaction[]) => {
           const myBban = this.accountNr();
 
+          // Req 2.5
           const relevantServer = serverList.filter(tx => 
-            tx.source === myBban || tx.target === myBban
+            (tx.source && tx.source === myBban) || 
+            (tx.target && tx.target === myBban)
+          );
+
+          const relevantLocal = this.localTransactions.filter(tx =>
+            (tx.source && tx.source === myBban) || 
+            (tx.target && tx.target === myBban)
           );
 
           const demoTx = this.getDemoTransaction();
           
-          const uniqueLocal = this.localTransactions.filter(localTx => {
+          const uniqueLocal = relevantLocal.filter(localTx => {
             return !relevantServer.some(serverTx => 
-              serverTx.date === localTx.date && Math.abs(serverTx.amount) === Math.abs(localTx.amount)
+              serverTx.date === localTx.date && 
+              Math.abs(serverTx.amount) === Math.abs(localTx.amount)
             );
           });
 
@@ -115,20 +124,26 @@ export class DashboardComponent implements OnInit {
             const t = { ...tx }; 
             
             if (t.target === myBban) {
-              t.amount = Math.abs(t.amount);
+              t.amount = Math.abs(t.amount); 
             } else if (t.source === myBban) {
-              t.amount = -Math.abs(t.amount);
+              t.amount = -Math.abs(t.amount); 
             }
             return t;
           });
 
-          this.allTransactions = combined.sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+          this.allTransactions = combined.sort((a, b) => 
+            new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
+          );
           
           this.recalculateTable();
         },
         error: (e) => {
           console.error('Tx Error:', e);
-          this.allTransactions = [...this.localTransactions, this.getDemoTransaction()];
+          const myBban = this.accountNr();
+          const myLocal = this.localTransactions.filter(tx => 
+            tx.source === myBban || tx.target === myBban
+          );
+          this.allTransactions = [...myLocal, this.getDemoTransaction()];
           this.updatePaging();
         }
       });
@@ -136,7 +151,9 @@ export class DashboardComponent implements OnInit {
 
   recalculateTable() {
     if (!this.allTransactions.length) return;
+    
     let runningBalance = this.balance();
+    
     this.allTransactions.forEach(tx => {
       tx.balance = runningBalance;
       runningBalance = runningBalance - tx.amount;
@@ -215,7 +232,6 @@ export class DashboardComponent implements OnInit {
           };
 
           this.localTransactions.push(newTx);
-          
           localStorage.setItem('local_transactions', JSON.stringify(this.localTransactions));
 
           const newBal = this.balance() - val;
@@ -225,7 +241,6 @@ export class DashboardComponent implements OnInit {
 
           this.lastPaymentTarget.set(target);
           this.lastPaymentBalance.set(newBal);
-          
           this.paymentSuccess.set(true);
         },
         error: (err) => {

@@ -1,4 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
@@ -6,14 +7,13 @@ import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink], 
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
   private authService = inject(AuthService);
 
-  // Req 1.5: Angabe Vorname, Nachname, Benutzername, Passwort möglich.
   firstName = signal('');
   lastName = signal('');
   username = signal('');
@@ -22,12 +22,10 @@ export class RegisterComponent {
 
   isValid = computed(() => {
     return (
-      // Req 1.7: Nur Eingaben mit mehr als 3 Zeichen akzeptieren.
       this.firstName().length > 3 &&
       this.lastName().length > 3 &&
       this.username().length > 3 &&
       this.password().length > 3 &&
-      // Req 1.6: Registrierung nur möglich, wenn Password Confirmation identisch ist.
       this.password() === this.confirmPassword()
     );
   });

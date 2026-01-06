@@ -1,14 +1,70 @@
-<div class="register-container">
-  <h2>Registrierung</h2>
-  
-  <input type="text" [ngModel]="firstName()" (ngModelChange)="firstName.set($event)" placeholder="Vorname">
-  <input type="text" [ngModel]="lastName()" (ngModelChange)="lastName.set($event)" placeholder="Nachname">
-  <input type="text" [ngModel]="username()" (ngModelChange)="username.set($event)" placeholder="Benutzername">
-  
-  <input type="password" [ngModel]="password()" (ngModelChange)="password.set($event)" placeholder="Passwort">
-  <input type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" placeholder="Passwort bestätigen">
+<div class="container-fluid">
+  <header class="register-header">
+    <h1>Finance Portal</h1>
+    <a routerLink="/login" class="btn-secondary">Zum Login</a>
+  </header>
 
-  <button (click)="onRegister()" [disabled]="!isValid()">Registrieren</button>
-  
-  <p><a routerLink="/login">Bereits einen Account? Zum Login</a></p>
+  <hr class="divider">
+
+  <div class="register-form-container">
+    <h2>Neuen Account erstellen</h2>
+
+    <div class="form-group">
+      <label>Vorname</label>
+      <input type="text" 
+             [ngModel]="firstName()" 
+             (ngModelChange)="firstName.set($event)" 
+             class="form-control" 
+             placeholder="Vorname eingeben">
+    </div>
+
+    <div class="form-group">
+      <label>Nachname</label>
+      <input type="text" 
+             [ngModel]="lastName()" 
+             (ngModelChange)="lastName.set($event)" 
+             class="form-control" 
+             placeholder="Nachname eingeben">
+    </div>
+
+    <div class="form-group">
+      <label>Benutzername</label>
+      <input type="text" 
+             [ngModel]="username()" 
+             (ngModelChange)="username.set($event)" 
+             class="form-control" 
+             placeholder="Benutzername wählen">
+      <small class="form-text">Mindestens 4 Zeichen.</small>
+    </div>
+    
+    <div class="form-group">
+      <label>Passwort</label>
+      <input type="password" 
+             [ngModel]="password()" 
+             (ngModelChange)="password.set($event)" 
+             class="form-control" 
+             placeholder="Passwort wählen">
+    </div>
+
+    <div class="form-group">
+      <label>Passwort bestätigen</label>
+      <input type="password" 
+             [ngModel]="confirmPassword()" 
+             (ngModelChange)="confirmPassword.set($event)" 
+             class="form-control" 
+             placeholder="Passwort wiederholen">
+      <small *ngIf="password() !== confirmPassword() && confirmPassword().length > 0" class="error-text">
+        Passwörter stimmen nicht überein.
+      </small>
+    </div>
+
+    <div class="actions">
+      <button (click)="onRegister()" 
+              [disabled]="!isValid()" 
+              class="btn-primary register-btn">
+        Registrieren
+      </button>
+    </div>
+    
+  </div>
 </div>
