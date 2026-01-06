@@ -3,11 +3,27 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+export interface Owner {
+  firstname: string;
+  lastname: string;
+  bban: string;
+}
+
+export interface AccountInfo {
+  balance: number;
+  owner: Owner;
+}
+
 export interface Transaction {
   amount: number;
   date: string;
   target: string;
   source: string;
+}
+
+interface TransactionResponse {
+  results?: Transaction[];
+  transactions?: Transaction[];
 }
 
 @Injectable({
@@ -26,27 +42,27 @@ export class AccountService {
     };
   }
 
-  getAccountInfo() {
-    return this.http.get<any>(`${this.apiUrl}/accounts`, this.getHeaders());
+  getAccountInfo(): Observable<AccountInfo> {
+    return this.http.get<AccountInfo>(`${this.apiUrl}/accounts`, this.getHeaders());
   }
 
   // Req 2.2: Backend-Abfrage zur Validierung und Ermittlung des Empfängernamens.
-  getAccount(accountNr: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/accounts/${accountNr}`, this.getHeaders()); 
+  getAccount(accountNr: string): Observable<Owner> {
+    return this.http.get<Owner>(`${this.apiUrl}/accounts/${accountNr}`, this.getHeaders()); 
   }
 
   // Req 2.5: Laden der Transaktionsliste vom Server für die Übersicht.
   getTransactions(): Observable<Transaction[]> {
-    return this.http.get<any>(`${this.apiUrl}/accounts/transactions`, this.getHeaders())
+    return this.http.get<Transaction[] | TransactionResponse>(`${this.apiUrl}/accounts/transactions`, this.getHeaders())
       .pipe(
         map(response => {
           if (Array.isArray(response)) {
             return response;
           }
-          if (response && Array.isArray(response.transactions)) {
+          if ('transactions' in response && Array.isArray(response.transactions)) {
             return response.transactions;
           }
-          if (response && Array.isArray(response.results)) {
+          if ('results' in response && Array.isArray(response.results)) {
             return response.results;
           }
           return [];
@@ -55,8 +71,8 @@ export class AccountService {
   }
 
   // Req 2.1: Sendet die Zahlungsanweisung an das Backend.
-  executeTransaction(target: string, amount: number) {
+  executeTransaction(target: string, amount: number): Observable<void> {
     const body = { target, amount };
-    return this.http.post<any>(`${this.apiUrl}/accounts/transactions`, body, this.getHeaders()); 
+    return this.http.post<void>(`${this.apiUrl}/accounts/transactions`, body, this.getHeaders()); 
   }
 }

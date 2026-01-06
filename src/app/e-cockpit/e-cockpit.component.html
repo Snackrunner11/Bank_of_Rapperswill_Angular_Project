@@ -1,0 +1,127 @@
+<div class="cockpit-header-bar">
+    <div class="header-content">
+        <a routerLink="/dashboard" class="nav-btn">Home</a>
+        
+        <div class="nav-title">e-Cockpit</div>
+        
+        <div class="header-spacer"></div> 
+    </div>
+</div>
+
+<div class="cockpit-container">
+  
+  <div class="cockpit-tabs">
+    <div class="tab" 
+         [class.active]="activeTab() === 'movements'" 
+         (click)="activeTab.set('movements')">
+      Bewegungen
+    </div>
+    <div class="tab" 
+         [class.active]="activeTab() === 'balance'" 
+         (click)="activeTab.set('balance')">
+      Saldoverlauf
+    </div>
+  </div>
+
+  <div class="cockpit-content">
+    
+    <div *ngIf="activeTab() === 'movements'">
+      <div class="filter-bar">
+        <label id="filter-label">Filter:</label>
+        
+        <select aria-label="Filter Jahr"
+                [ngModel]="selectedYear()" 
+                (ngModelChange)="selectedYear.set($event); currentPage.set(1)">
+          <option value="Alle">Alle Jahre</option>
+          <option *ngFor="let y of availableYears()" [value]="y">{{ y }}</option>
+        </select>
+
+        <select aria-label="Filter Monat"
+                [ngModel]="selectedMonth()" 
+                (ngModelChange)="selectedMonth.set($event); currentPage.set(1)">
+          <option value="Alle">Alle Monate</option>
+          <option *ngFor="let m of months" [value]="m.val">{{ m.name }}</option>
+        </select>
+      </div>
+
+      <table class="cockpit-table">
+        <thead>
+          <tr>
+            <th (click)="toggleSort('dateObj')">Datum {{ getSortIcon('dateObj') }}</th>
+            <th (click)="toggleSort('source')">Von {{ getSortIcon('source') }}</th>
+            <th (click)="toggleSort('target')">Zu {{ getSortIcon('target') }}</th>
+            <th (click)="toggleSort('amount')">Betrag {{ getSortIcon('amount') }}</th>
+            <th (click)="toggleSort('balanceAfter')">Kontostand Neu {{ getSortIcon('balanceAfter') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of paginatedTransactions()">
+            <td>{{ t.dateObj | date:'dd.MM.yyyy' }}</td>
+            <td>{{ t.source }}</td>
+            <td>{{ t.target }}</td>
+            <td [class.negative]="t.amount < 0" [class.positive]="t.amount > 0">
+              {{ t.amount | number:'1.2-2' }}
+            </td>
+            <td>{{ t.balanceAfter | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="paginatedTransactions().length === 0">
+            <td colspan="5" class="no-data">Keine Einträge gefunden.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination-footer">
+        <div class="page-nav">
+          <button [disabled]="currentPage() === 1" 
+                  (click)="currentPage.set(currentPage() - 1)"
+                  aria-label="Vorherige Seite">
+            ◄
+          </button>
+          
+          <span>Seite {{ currentPage() }} / {{ totalPages() || 1 }}</span>
+          
+          <select aria-label="Seite auswählen"
+                  [ngModel]="currentPage()" 
+                  (ngModelChange)="currentPage.set(+$event)">
+            <option *ngFor="let p of pageNumbers()" [value]="p">{{ p }}</option>
+          </select>
+
+          <button [disabled]="currentPage() >= totalPages()" 
+                  (click)="currentPage.set(currentPage() + 1)"
+                  aria-label="Nächste Seite">
+            ►
+          </button>
+        </div>
+
+        <div class="entries-config">
+          <label for="entriesInput">Entries per Page:</label>
+          <input id="entriesInput"
+                 type="number" 
+                 [ngModel]="entriesPerPage()" 
+                 (ngModelChange)="entriesPerPage.set($event); currentPage.set(1)" 
+                 min="1" max="100">
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab() === 'balance'">
+      <h3>Saldoverlauf</h3>
+      <div class="graph-container">
+        <svg viewBox="0 0 1000 300" class="graph-svg">
+           <line x1="0" y1="50" x2="1000" y2="50" stroke="#ddd" stroke-width="1" />
+           <line x1="0" y1="150" x2="1000" y2="150" stroke="#ddd" stroke-width="1" />
+           <line x1="0" y1="250" x2="1000" y2="250" stroke="#ddd" stroke-width="1" />
+
+           <polyline [attr.points]="balanceChartPath()" 
+                     fill="none" 
+                     stroke="#00E5FF" 
+                     stroke-width="3" />
+        </svg>
+      </div>
+      <p class="graph-caption">
+        Der Verlauf zeigt den Kontostand chronologisch von links nach rechts.
+      </p>
+    </div>
+
+  </div>
+</div>

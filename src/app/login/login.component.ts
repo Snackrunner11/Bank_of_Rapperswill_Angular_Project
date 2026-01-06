@@ -16,12 +16,16 @@ export class LoginComponent {
   username = signal('');
   password = signal('');
 
+  hasMinLength = (min: number) => (value: string) => value.length > min;
+
   onLogin() {
     const user = this.username();
     const pass = this.password();
 
     // Req 1.1: Eingaben (User/Passwort) nur akzeptieren, wenn > 3 Zeichen.
-    if (user.length > 3 && pass.length > 3) {
+    const isValidInput = this.hasMinLength(3);
+
+    if (isValidInput(user) && isValidInput(pass)) {
       this.authService.login(user, pass);
     } else {
       alert('Benutzername und Passwort müssen länger als 3 Zeichen sein.');

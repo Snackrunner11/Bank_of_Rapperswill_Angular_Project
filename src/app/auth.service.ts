@@ -94,7 +94,11 @@ export class AuthService {
 
   logout() {
     // Req 1.9: Logout löscht Token aus Local Storage.
-    localStorage.clear();
+    // Geändert: Nur spezifische Items löschen, damit Transaktionen erhalten bleiben
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_first_name');
+    localStorage.removeItem('user_last_name');
+
     this.currentUser.set('');
     
     // Req 1.10: Nach Logout auf Login Seite weiterleiten.

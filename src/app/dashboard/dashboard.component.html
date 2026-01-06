@@ -1,9 +1,14 @@
 <div class="container-fluid">
   <header class="dashboard-header">
     <h1>Praxisprojekt M323</h1>
-    <button (click)="onLogout()" class="btn-primary logout-btn">
-      Logout {{ authService.currentUser() }}
-    </button>
+    
+    <div class="header-actions">
+      <a routerLink="/cockpit" class="cockpit-btn">Zum Cockpit</a>
+      
+      <button (click)="onLogout()" class="btn-primary logout-btn">
+        Logout {{ authService.currentUser() }}
+      </button>
+    </div>
   </header>
 
   <hr class="divider">

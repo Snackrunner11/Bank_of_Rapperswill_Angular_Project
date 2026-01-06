@@ -18,6 +18,30 @@
   font-weight: bold;
 }
 
+/* Neue Klasse für Buttons oben rechts */
+.header-actions {
+  display: flex;
+  gap: 15px; /* Abstand zwischen Cockpit und Logout Button */
+  align-items: center;
+}
+
+/* Style für den Cockpit Link (sieht aus wie ein Button) */
+/* Auskommentiert für e-Cockpit Deaktivierung */
+/*
+.cockpit-btn {
+  text-decoration: none;
+  background-color: #00BCD4; 
+  color: white;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.cockpit-btn:hover {
+  background-color: #00acc1;
+}
+*/
+
 .divider {
   border: 0;
   border-top: 1px solid #ddd;
