@@ -1,59 +1,86 @@
-# Modul323Projekt
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF_8">
+<title>Modul 323 Project Description</title>
+<style>
+    body {
+        font_family: system_ui, sans_serif;
+        line_height: 1.6;
+        color: #333;
+        max_width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    h1 {
+        color: #2c3e50;
+        border_bottom: 2px solid #eee;
+        padding_bottom: 10px;
+    }
+    h2 {
+        color: #e67e22;
+        margin_top: 30px;
+    }
+    ul {
+        padding_left: 20px;
+    }
+    li {
+        margin_bottom: 10px;
+    }
+    code {
+        background_color: #f4f4f4;
+        padding: 2px 5px;
+        border_radius: 4px;
+        font_family: monospace;
+    }
+    .footer {
+        margin_top: 50px;
+        font_size: 0.9em;
+        color: #777;
+        border_top: 1px solid #eee;
+        padding_top: 20px;
+    }
+</style>
+</head>
+<body>
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
+    <h1>Modul 323: Functional Programming</h1>
 
-## Development server
+    <p>Welcome to the repository for my ICT Module 323 project. This codebase demonstrates the practical application of functional programming paradigms, focusing on writing clean, robust, and side_effect_free code.</p>
 
-To start a local development server, run:
+    <h2>📖 Project Overview</h2>
+    <p>The goal of this project is to solve algorithmic challenges using a declarative approach. Instead of traditional imperative loops and mutable state, this solution utilizes:</p>
+    <ul>
+        <li><strong>Immutability:</strong> Data structures are never modified in place; new states are created and returned.</li>
+        <li><strong>Pure Functions:</strong> Methods rely solely on their inputs and produce consistent outputs without altering global state.</li>
+        <li><strong>Higher Order Functions:</strong> Functions are treated as first_class citizens, allowing for flexible and reusable logic (e.g., using map, filter, reduce).</li>
+    </ul>
 
-```bash
-ng serve
-```
+    <h2>🚀 Features</h2>
+    <p>This application includes the following capabilities:</p>
+    <ul>
+        <li><strong>Data Processing:</strong> Efficient handling of data streams using functional pipelines.</li>
+        <li><strong>Error Handling:</strong> Robust management of edge cases without relying on traditional exception throwing where possible.</li>
+        <li><strong>Modular Design:</strong> Small, single_purpose functions that can be easily tested and composed.</li>
+    </ul>
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+    <h2>🛠 Technologies</h2>
+    <p>The project is built using strict functional standards:</p>
+    <ul>
+        <li><strong>Language:</strong> [Insert Language, e.g., Java / Python / Haskell]</li>
+        <li><strong>Version:</strong> [Insert Version]</li>
+        <li><strong>Tools:</strong> [Insert Tools, e.g., Maven, Gradle, PyTest]</li>
+    </ul>
 
-## Code scaffolding
+    <h2>📝 Usage</h2>
+    <p>To run this project locally, clone the repository and execute the main entry point:</p>
+    <code>git clone https://github.com/Snackrunner11/modul_323_projekt.git</code>
+    <br><br>
+    <code>[Insert Command to Run App]</code>
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+    <div class="footer">
+        <p>Created by <strong>Snackrunner11</strong> for Modul 323.</p>
+    </div>
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+</body>
+</html>
