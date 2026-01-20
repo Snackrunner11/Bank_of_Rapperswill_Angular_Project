@@ -1,59 +1,26 @@
-# Modul323Projekt
+# Modul 323: Functional Programming
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
+Welcome to the repository for my ICT Module 323 project. This codebase demonstrates the practical application of functional programming paradigms, focusing on writing clean, robust, and side_effect_free code.
 
-## Development server
+## Project Overview
 
-To start a local development server, run:
+The goal of this project is to solve challenges using a declarative approach. Instead of traditional imperative loops and mutable state, this solution utilizes:
 
-```bash
-ng serve
-```
+* **Immutability:** Data structures are not modified in place; new states are created and returned.
+* **Pure Functions:** Methods rely solely on their inputs and produce consistent outputs without altering global state.
+* **Higher Order Functions:** Functions are treated as first_class citizens, allowing for flexible and reusable logic.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Features
 
-## Code scaffolding
+This application includes the following capabilities:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+* **Data Processing:** Efficient handling of data streams using functional pipelines.
+* **Error Handling:** Management of edge cases without relying on traditional exception throwing where possible.
+* **Modular Design:** Small, single purpose functions that can be easily tested and composed.
 
-```bash
-ng generate component component-name
-```
+## Usage
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+To run this project locally, clone the repository and execute the main entry point:
 
 ```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+git clone [https://github.com/Snackrunner11/modul-323-projekt.git](https://github.com/Snackrunner11/modul-323-projekt.git)
